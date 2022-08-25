@@ -1,0 +1,47 @@
+name: weight_tracker
+description: Tracker of your weight.
+
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.16.2 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.2
+  get: ^4.6.5
+  cloud_firestore: ^3.1.17
+  firebase_auth: ^3.3.19
+  bordered_text: ^2.0.0
+  flutter_launcher_icons: ^0.10.0
+  connectivity_plus: ^2.3.6+1
+
+flutter_icons:
+  image_path: "assets/logo.png"
+  android: true
+  ios: true
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^1.0.0
+
+flutter:
+
+  uses-material-design: true
+
+  assets:
+    - assets/
+
+  fonts:
+    - family: DynaPuff
+      fonts:
+        - asset: fonts/DynaPuff/DynaPuff-Regular.ttf
+        - asset: fonts/DynaPuff/DynaPuff-Medium.ttf
+        - asset: fonts/DynaPuff/DynaPuff-SemiBold.ttf
+        - asset: fonts/DynaPuff/DynaPuff-Bold.ttf
