@@ -20,8 +20,9 @@ class DefaultTextField extends StatelessWidget {
         validator: (value) {
           if (value!.isEmpty) {
             return ('Enter weight.');
-          } else if (!value
-              .contains(RegExp('^([1-9]|[1-9][0-9]|[1-9][0-9][0-9])'))) {
+          } else if (!value.contains(
+              RegExp('^([1-9]|[1-9][0-9]|[1-9][0-9][0-9])')
+          )) {
             return ('Enter valid weight.');
           }
           return null;

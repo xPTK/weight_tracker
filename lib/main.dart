@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 import 'package:weight_tracker/authentication_wrapper.dart';
+import 'package:weight_tracker/bindings/app_bindings.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,6 +28,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.orange,
       ),
+      initialBinding: AppBindings(),
       home: const AuthenticationWrapper(),
     );
   }

@@ -37,8 +37,13 @@ class AuthService {
         'Unable to sign in. Check your Internet connection.',
         backgroundColor: Colors.orange,
         colorText: Colors.white,
+        borderColor: Colors.white,
+        borderWidth: 1.0,
         snackPosition: SnackPosition.BOTTOM,
-        icon: const Icon(Icons.error),
+        icon: const Icon(
+          Icons.error,
+          color: Colors.white,
+        ),
         margin: const EdgeInsets.all(8.0),
       );
     }
@@ -59,8 +64,15 @@ class AuthService {
     } on FirebaseAuthException catch (e) {
       Get.snackbar('Error',
         'Unable to sign out.',
+        backgroundColor:Colors.orange,
+        colorText: Colors.white,
+        borderColor: Colors.white,
+        borderWidth: 1.0,
         snackPosition: SnackPosition.BOTTOM,
-        icon: const Icon(Icons.error),
+        icon: const Icon(
+          Icons.error,
+          color: Colors.white,
+        ),
         margin: const EdgeInsets.all(8.0),
       );
     }

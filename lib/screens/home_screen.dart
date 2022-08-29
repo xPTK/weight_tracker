@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:weight_tracker/controllers/home_controller.dart';
+import 'package:weight_tracker/controllers/connection_controller.dart';
 import 'package:weight_tracker/services/auth.dart';
 import 'package:weight_tracker/services/database.dart';
 import 'package:weight_tracker/widgets/app_bar_icon_button.dart';
@@ -19,15 +20,49 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final DatabaseService _dbService = DatabaseService.dbService;
   final AuthService _authService = AuthService.authService;
-  final HomeController _homeController = Get.put(HomeController());
 
-  final TextEditingController addWeightFieldController = TextEditingController();
-  final TextEditingController editWeightFieldController = TextEditingController();
+  final HomeController _homeController = Get.find<HomeController>();
+  final ConnectionController _connectionController =
+    Get.find<ConnectionController>();
+
+  final TextEditingController addWeightFieldController =
+    TextEditingController();
+  final TextEditingController editWeightFieldController =
+    TextEditingController();
+
+  String get connection => _connectionController.connection.value;
+  set connection(String value) => _connectionController.connection.value = value;
+
+  @override
+  void initState() {
+
+    _connectionController.connectionStreamSubscription =
+      _connectionController.connectionStream.listen((result) {
+        connection = result.name;
+
+        Get.snackbar(
+          'Connection status',
+          'Connection: $connection',
+          backgroundColor:Colors.orange,
+          colorText: Colors.white,
+          borderColor: Colors.white,
+          borderWidth: 1.0,
+          icon: Icon(
+            _connectionController.setConnectionIcon(connection),
+            color: Colors.white,
+          ),
+          duration: const Duration(seconds: 3),
+        );
+      });
+
+    super.initState();
+  }
 
   @override
   void dispose() {
     addWeightFieldController.dispose();
     editWeightFieldController.dispose();
+    _connectionController.connectionStreamSubscription.cancel();
     super.dispose();
   }
 
@@ -44,9 +79,15 @@ class _HomeScreenState extends State<HomeScreen> {
               Get.snackbar(
                 'Tips',
                 'Press entry to edit weight. \nLong press entry to delete weight.',
-                icon: const Icon(Icons.info),
+                backgroundColor:Colors.orange,
+                colorText: Colors.white,
+                borderColor: Colors.white,
+                borderWidth: 1.0,
+                icon: const Icon(
+                  Icons.info,
+                  color: Colors.white,
+                ),
                 duration: const Duration(seconds: 5),
-                shouldIconPulse: false,
               );
             },
           ),
@@ -99,6 +140,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   confirmTextColor: Colors.white,
                                   onConfirm: () {
                                     _dbService.updateWeight(
+                                      connection,
                                       weight,
                                       editWeightFieldController,
                                     );
@@ -108,7 +150,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                 );
                               },
                               onLongPress: () {
-                                _dbService.deleteWeight(weight);
+                                _dbService.deleteWeight(
+                                  connection,
+                                  weight,
+                                );
                               }
                             ),
                             const Divider(
@@ -142,9 +187,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   _homeController.isAddButtonEnabled.value = false;
 
                   await _dbService.addWeight(
+                    connection,
                     weights,
                     addWeightFieldController,
                   );
+
                   _homeController.isAddButtonEnabled.value = true;
                 }
                 : null,
